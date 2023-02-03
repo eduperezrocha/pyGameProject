@@ -15,15 +15,10 @@ def main():
     text_font = pygame.font.Font('Font/Pixeltype.ttf', 60)
 
     text_surface = text_font.render('Penguin Jumping Game', False, 'Black')
-    #Penguin Sprite
-    penguin_surface = pygame.image.load('graphics/penguin.png').convert_alpha()
-    penguin_surface = pygame.transform.scale(penguin_surface, (100,100))
-    #Snake Sprite
-    snake_surface = pygame.image.load("graphics/snake.png").convert()
-    snake_surface = pygame.transform.scale(snake_surface, (100,100))
 
-    penguin_x = 0
-    penguin_y = 250
+    #Coordinates
+    penguin_x = 80
+    penguin_y = 270
 
     snake_x = 400
     snake_y = 250
@@ -31,6 +26,17 @@ def main():
     MOVE_UP = 220
     MOVE_DOWN = 300
     MOVE_MIDDLE = 250
+
+    #Penguin Sprite
+    penguin_surface = pygame.image.load('graphics/penguin.png').convert_alpha()
+    penguin_surface = pygame.transform.scale(penguin_surface, (70,70))
+    penguin_rect =  penguin_surface.get_rect(center = (penguin_x,penguin_y))
+
+    #Snake Sprite
+    snake_surface = pygame.image.load("graphics/snake.png").convert_alpha()
+    snake_surface = pygame.transform.scale(snake_surface, (100,100))
+    snake_rect = snake_surface.get_rect(center = (snake_x,snake_y))
+   
 
     while True:
         for event in pygame.event.get():
@@ -53,21 +59,22 @@ def main():
                     if penguin_y == MOVE_UP:
                         penguin_y = MOVE_MIDDLE
                         print(3)
-                    if penguin_y == MOVE_MIDDLE:
+                    if penguin_y == MOVE_MIDDLE: 
                         penguin_y = MOVE_DOWN
                         print(4)
-        
         screen.blit(sky_surface,(0,0))
         screen.blit(ground_surface, (0, 300)) 
         screen.blit(text_surface, (300, 50))
+        screen.blit(penguin_surface, (penguin_rect))
+        screen.blit(snake_surface, (snake_rect))
+
+        snake_rect.x -= 4
+        #Goes back if the snake goes out of the screen
+        if penguin_rect.colliderect(snake_rect) == 1:
+            pass
         penguin_x += 1
         snake_x -= 4
-        screen.blit(penguin_surface, (penguin_x, penguin_y ))
-        screen.blit(snake_surface, (snake_x, snake_y))
 
-        #Goes back if the snake goes out of the screen
-        if snake_x == -100: snake_x = 800
-        
         pygame.display.update()
         clock.tick(60)
         #52:34
